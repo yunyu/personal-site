@@ -1,0 +1,130 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  background: #07080d;
+}
+
+body {
+  font-size: 1.5em;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  padding: 0px 128px;
+}
+
+h1 {
+  font-size: 2.25em;
+  font-weight: 600;
+}
+
+p {
+  line-height: 1.5em;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+.typer {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 3.5em;
+  margin: 0.2em 0;
+}
+
+.typer .text {
+  color: #2deefe;
+}
+
+.typer .caret {
+  display: inline-block;
+  width: 0.6em;
+  background-color: #222935;
+  transition: 0.333s opacity;
+  opacity: 1;
+}
+
+.typer .caret.hidden {
+  opacity: 0;
+}
+
+.typer .caret:before {
+  content: '\200B';
+}
+
+a {
+  color: #57677b;
+  text-decoration: none;
+  transition: color 0.5s;
+}
+
+a:hover,
+a:active {
+  color: #6a7e95;
+}
+
+@media only screen and (max-width: 1280px) {
+  body {
+    font-size: 1.15em;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  .typer {
+    font-size: 3em;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  body {
+    padding: 0px 64px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  body {
+    padding: 0px 48px;
+  }
+}
+
+@media only screen and (max-width: 660px) {
+  body {
+    font-size: 1em;
+    padding: 0px 32px;
+  }
+
+  h1 {
+    font-size: 1.4em;
+  }
+
+  .typer {
+    font-size: 1.9em;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  body {
+    padding: 0px 20px;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  body {
+    padding: 0px 15px;
+  }
+
+  h1 {
+    font-size: 1.2em;
+  }
+
+  .typer {
+    font-size: 1.5em;
+  }
+}
