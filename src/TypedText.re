@@ -1,7 +1,7 @@
-open StackUtil;
+open Util;
 
 type state = {
-  displayedChars: Stack.t(string),
+  displayedChars: array(string),
   timerId: option(Js.Global.timeoutId),
 };
 
@@ -28,24 +28,26 @@ let make =
     ) => {
   ...component,
 
-  initialState: () => {displayedChars: Stack.create(), timerId: None},
+  initialState: () => {displayedChars: [||], timerId: None},
 
-  reducer: (action, state) =>
+  reducer: (action, state) => {
+    let {displayedChars} = state;
+
     switch (action) {
     | Append(string) =>
       ReasonReact.Update({
         ...state,
-        displayedChars:
-          state.displayedChars |> updateStack(Stack.push(string)),
+        displayedChars: displayedChars |> updateArray(Js.Array.push(string)),
       })
     | Backspace =>
       ReasonReact.Update({
         ...state,
-        displayedChars: state.displayedChars |> updateStack(Stack.pop),
+        displayedChars: displayedChars |> updateArray(Js.Array.pop),
       })
     | TimerStarted(timeoutId) =>
       ReasonReact.Update({...state, timerId: Some(timeoutId)})
-    },
+    };
+  },
 
   didMount: ({send}) => {
     let tasksForString = str => {
@@ -73,11 +75,7 @@ let make =
       /* Execute current task */
       | [currTask, ...rest] =>
         let {action, nextTaskTimeout} = currTask;
-
-        switch (action) {
-        | Some(actionToSend) => send(actionToSend)
-        | None => ()
-        };
+        action |> mapSome(send);
 
         let timerId =
           Js.Global.setTimeout(() => runTasks(rest), nextTaskTimeout);
@@ -90,14 +88,11 @@ let make =
     runTasks(tasks);
   },
 
-  willUnmount: ({state}) =>
-    switch (state.timerId) {
-    | Some(timerId) => Js.Global.clearTimeout(timerId)
-    | None => ()
-    },
+  willUnmount: ({state: {timerId}}) =>
+    timerId |> mapSome(Js.Global.clearTimeout),
 
   render: ({state}) =>
     <span className="text">
-      {state.displayedChars |> stringOfStack |> ReasonReact.string}
+      {state.displayedChars |> Js.Array.joinWith("") |> ReasonReact.string}
     </span>,
 };

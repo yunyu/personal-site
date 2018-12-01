@@ -1,3 +1,5 @@
+open Util;
+
 type state = {
   visible: bool,
   intervalId: option(Js.Global.intervalId),
@@ -28,11 +30,8 @@ let make = (~interval, _children) => {
     )
     |> send,
 
-  willUnmount: ({state}) =>
-    switch (state.intervalId) {
-    | Some(intervalId) => Js.Global.clearInterval(intervalId)
-    | None => ()
-    },
+  willUnmount: ({state: {intervalId}}) =>
+    intervalId |> mapSome(Js.Global.clearInterval),
 
   render: ({state}) =>
     <span
