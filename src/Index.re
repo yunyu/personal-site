@@ -1,4 +1,4 @@
-/* Only way, according to BuckleScript docs */
+/* From https://bucklescript.github.io/docs/en/interop-with-js-build-systems */
 %raw
 {|import './styles.css'|};
 
