@@ -25,18 +25,13 @@ let make = (~interval, _children) => {
     },
 
   didMount: ({send}) =>
-    IntervalStarted(
-      Js.Global.setInterval(() => send(ToggleVisibility), interval),
-    )
-    |> send,
+    Js.Global.setInterval(() => send(ToggleVisibility), interval)
+    ->IntervalStarted
+    ->send,
 
   willUnmount: ({state: {intervalId}}) =>
-    intervalId |> mapSome(Js.Global.clearInterval),
+    intervalId->mapSome(Js.Global.clearInterval),
 
-  render: ({state}) =>
-    <span
-      className={
-        String.concat(" ", ["caret", state.visible ? "visible" : "hidden"])
-      }
-    />,
+  render: ({state: {visible}}) =>
+    <span className={Cn.make(["caret", "hidden"->Cn.ifTrue(!visible)])} />,
 };

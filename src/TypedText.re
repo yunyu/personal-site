@@ -1,3 +1,4 @@
+open Belt;
 open Util;
 
 type state = {
@@ -37,49 +38,47 @@ let make =
     | Append(string) =>
       ReasonReact.Update({
         ...state,
-        displayedChars: displayedChars |> updateArray(Js.Array.push(string)),
+        displayedChars: displayedChars->updateArray(Js.Array.push(string)),
       })
     | Backspace =>
       ReasonReact.Update({
         ...state,
-        displayedChars: displayedChars |> updateArray(Js.Array.pop),
+        displayedChars: displayedChars->updateArray(Js.Array.pop),
       })
-    | TimerStarted(timeoutId) =>
-      ReasonReact.Update({...state, timerId: Some(timeoutId)})
+    | TimerStarted(timerId) =>
+      ReasonReact.Update({...state, timerId: Some(timerId)})
     };
   },
 
   didMount: ({send}) => {
     let tasksForString = str => {
-      let chars = str |> Js.String.split("") |> Array.to_list;
+      let chars = Js.String.split("", str)->List.fromArray;
 
       let preTypeTask = [{action: None, nextTaskTimeout: preTypeDelay}];
       let appendTasks =
-        chars
-        |> List.map(char =>
-             {action: Some(Append(char)), nextTaskTimeout: typeDelay}
-           );
+        chars->List.map(char =>
+          {action: Some(Append(char)), nextTaskTimeout: typeDelay}
+        );
       let preEraseTask = [{action: None, nextTaskTimeout: preEraseDelay}];
       let eraseTasks =
-        chars
-        |> List.rev_map(_char =>
-             {action: Some(Backspace), nextTaskTimeout: eraseDelay}
-           );
+        chars->List.map(_char =>
+          {action: Some(Backspace), nextTaskTimeout: eraseDelay}
+        );
       preTypeTask @ appendTasks @ preEraseTask @ eraseTasks;
     };
 
-    let tasks = texts |> List.map(tasksForString) |> List.concat;
+    let tasks = texts->List.map(tasksForString)->List.flatten;
 
     let rec runTasks = remaining =>
       switch (remaining) {
       /* Execute current task */
       | [currTask, ...rest] =>
         let {action, nextTaskTimeout} = currTask;
-        action |> mapSome(send);
+        action->mapSome(send);
 
-        let timerId =
-          Js.Global.setTimeout(() => runTasks(rest), nextTaskTimeout);
-        TimerStarted(timerId) |> send;
+        Js.Global.setTimeout(() => runTasks(rest), nextTaskTimeout)
+        ->TimerStarted
+        ->send;
 
       /* If no more tasks, restart */
       | [] => runTasks(tasks)
@@ -89,10 +88,10 @@ let make =
   },
 
   willUnmount: ({state: {timerId}}) =>
-    timerId |> mapSome(Js.Global.clearTimeout),
+    timerId->mapSome(Js.Global.clearTimeout),
 
   render: ({state}) =>
     <span className="text">
-      {state.displayedChars |> Js.Array.joinWith("") |> ReasonReact.string}
+      {Js.Array.joinWith("", state.displayedChars)->ReasonReact.string}
     </span>,
 };

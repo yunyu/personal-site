@@ -1,6 +1,8 @@
-let updateArray = (updater, arr) => {
-  updater(arr) |> ignore;
+open Belt;
+
+let updateArray = (arr, updater) => {
+  updater(arr) -> ignore;
   arr;
 };
 
-let mapSome = (fn, opt) => Belt.Option.mapWithDefault(opt, (), fn);
+let mapSome = (opt, fn) => Option.mapWithDefault(opt, (), fn);
