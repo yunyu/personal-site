@@ -72,14 +72,6 @@ a:active {
   body {
     font-size: 1.15em;
   }
-
-  h1 {
-    font-size: 2em;
-  }
-
-  .typer {
-    font-size: 3em;
-  }
 }
 
 @media only screen and (max-width: 900px) {
@@ -99,32 +91,24 @@ a:active {
     font-size: 1em;
     padding: 0px 32px;
   }
-
-  h1 {
-    font-size: 1.4em;
-  }
-
-  .typer {
-    font-size: 1.9em;
-  }
 }
 
 @media only screen and (max-width: 480px) {
   body {
     padding: 0px 20px;
   }
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  .typer {
+    font-size: 2.0em;
+  }
 }
 
 @media only screen and (max-width: 350px) {
   body {
     padding: 0px 15px;
-  }
-
-  h1 {
-    font-size: 1.2em;
-  }
-
-  .typer {
-    font-size: 1.5em;
   }
 }
