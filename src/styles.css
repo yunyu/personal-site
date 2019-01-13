@@ -5,7 +5,7 @@ body {
 }
 
 html {
-  background: #07080d;
+  background: #090C15;
 }
 
 body {
@@ -44,7 +44,7 @@ p {
 .typer .caret {
   display: inline-block;
   width: 0.6em;
-  background-color: #222935;
+  background-color: #262C47;
   transition: 0.333s opacity;
   opacity: 1;
 }
@@ -58,14 +58,14 @@ p {
 }
 
 a {
-  color: #57677b;
+  color: #727CA5;
   text-decoration: none;
   transition: color 0.5s;
 }
 
 a:hover,
 a:active {
-  color: #6a7e95;
+  color: #A1A8C2;
 }
 
 @media only screen and (max-width: 1280px) {
